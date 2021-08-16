@@ -35,8 +35,8 @@ function App() {
 
   return (
     <>
-      <button onClick={undo}>undo</button>
-      <button onClick={redo}>redo</button>
+      <button onClick={undo} data-testid="undo" >undo</button>
+      <button onClick={redo} data-testid="redo">redo</button>
       <input
         type="color"
         data-testid="input"
@@ -44,6 +44,7 @@ function App() {
         onChange={({ target }) => record(target.value)}
       />
       <div
+        role="colordiv"
         style={{ backgroundColor: current, width: '10rem', height: '10rem' }}
       ></div>
     </>
