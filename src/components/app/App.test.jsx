@@ -32,4 +32,18 @@ describe('App component', () => {
     fireEvent.click(undoButton);
     expect(screen.getByRole('colordiv')).toHaveStyle('backgroundColor: #ff0000');
   });
+
+  // get redo button
+  // fire click event on redo button
+  // expect display to have backgroundColor === newColor
+  it('fires redo button', () => {
+    render(<App />);
+    const colorInput = screen.getByTestId('input');
+    fireEvent.change(colorInput, { target: { value: '#0000FF' } });
+    const undoButton = screen.getByTestId('undo');
+    fireEvent.click(undoButton);
+    const redoButton = screen.getByTestId('redo');
+    fireEvent.click(redoButton);
+    expect(screen.getByRole('colordiv')).toHaveStyle('backgroundColor: #0000ff');
+  });
 });
