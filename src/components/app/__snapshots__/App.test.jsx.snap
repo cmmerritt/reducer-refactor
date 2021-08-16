@@ -2,10 +2,14 @@
 
 exports[`App component renders App 1`] = `
 <DocumentFragment>
-  <button>
+  <button
+    data-testid="undo"
+  >
     undo
   </button>
-  <button>
+  <button
+    data-testid="redo"
+  >
     redo
   </button>
   <input
@@ -14,6 +18,7 @@ exports[`App component renders App 1`] = `
     value="#FF0000"
   />
   <div
+    role="colordiv"
     style="background-color: rgb(255, 0, 0); width: 10rem; height: 10rem;"
   />
 </DocumentFragment>

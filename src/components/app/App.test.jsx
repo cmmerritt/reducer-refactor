@@ -14,7 +14,7 @@ describe('App component', () => {
   // get color input
   // fire change event on color input with newColor
   // expect display to have background color === newColor
-  it.only('gets color input', () => {
+  it('gets color input', () => {
     render(<App />);
     const colorInput = screen.getByTestId('input');
     fireEvent.change(colorInput, { target: { value: '#0000FF' } });
@@ -26,8 +26,10 @@ describe('App component', () => {
   // expect display to have backgroundColor === red
   it('fires undo button', () => {
     render(<App />);
+    const colorInput = screen.getByTestId('input');
+    fireEvent.change(colorInput, { target: { value: '#0000FF' } });
     const undoButton = screen.getByTestId('undo');
     fireEvent.click(undoButton);
-    expect()
+    expect(screen.getByRole('colordiv')).toHaveStyle('backgroundColor: #ff0000');
   });
 });
