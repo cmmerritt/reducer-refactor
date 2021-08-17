@@ -1,9 +1,19 @@
-import React, { useState } from 'react';
+import React, { useReducer } from 'react';
+
+function reducer() {
+  // return { state: color } ???
+  // returns updated state - how to get updated state in here?
+  // pull updated state from input button on click?
+}
 
 const useRecord = (init) => {
-  const [before, setBefore] = useState([]);
-  const [current, setCurrent] = useState(init);
-  const [after, setAfter] = useState([]);
+  const [beforeState] = useReducer(() => {}, { before: '' });
+  const [currentState] = useReducer(() => {}, { current: init });
+  const [afterState] = useReducer(() => {}, { after: '' });
+  // const [before, setBefore] = useState([]);
+  // const [current, setCurrent] = useState(init);
+  // const [after, setAfter] = useState([]);
+
 
   const undo = () => {
     setAfter((after) => [current, ...after]);
