@@ -15,7 +15,7 @@ exports[`App component renders App 1`] = `
   <input
     data-testid="input"
     type="color"
-    value="#FF0000"
+    value="#ff0000"
   />
   <div
     role="colordiv"

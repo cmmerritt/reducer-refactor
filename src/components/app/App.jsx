@@ -1,61 +1,65 @@
+/* eslint-disable max-len */
 import React, { useReducer } from 'react';
 
-function reducer() {
-  // return { state: color } ???
-  // returns updated state - how to get updated state in here?
-  // pull updated state from input button on click?
-}
+const initialState = {
+  before: [],
+  current: '#ff0000',
+  after: []
+};
 
-const useRecord = (init) => {
-  const [beforeState] = useReducer(() => {}, { before: '' });
-  const [currentState] = useReducer(() => {}, { current: init });
-  const [afterState] = useReducer(() => {}, { after: '' });
-  // const [before, setBefore] = useState([]);
-  // const [current, setCurrent] = useState(init);
-  // const [after, setAfter] = useState([]);
+const UNDO = 'UNDO';
+const REDO = 'REDO';
+const RECORD = 'RECORD';
 
+const undo = () => ({ type: UNDO });
+const redo = () => ({ type: REDO });
+const record = (color) => ({ 
+  type: RECORD,
+  payload: color
+});
 
-  const undo = () => {
-    setAfter((after) => [current, ...after]);
-    setCurrent(before[before.length - 1]);
-    setBefore((before) => before.slice(0, -1));
-  };
-
-  const redo = () => {
-    setBefore((before) => [...before, current]);
-    setCurrent(after[0]);
-    setAfter((after) => after.slice(1));
-  };
-
-  const record = (val) => {
-    setBefore((before) => [...before, current]);
-    setCurrent(val);
-  };
-
-  return {
-    undo,
-    record,
-    redo,
-    current,
-  };
+const reducer = (state, action) => {
+  switch(action.type) {
+    case UNDO:
+      return { 
+        ...state, 
+        current: state.before[state.before.length - 1],
+        after: [state.current, ...state.after],
+        before: state.before.slice(0, -1) 
+      };
+    case REDO:
+      return { 
+        ...state, 
+        current: state.after[0],
+        after: state.after.slice(1), 
+        before: [...state.before, state.current]
+      };
+    case RECORD:
+      return { 
+        ...state, 
+        current: action.payload,
+        before: [...state.before, state.current] 
+      };
+  }
 };
 
 function App() {
-  const { current, undo, redo, record } = useRecord('#FF0000');
+
+  const [state, dispatch] = useReducer(reducer, initialState);
 
   return (
     <>
-      <button onClick={undo} data-testid="undo" >undo</button>
-      <button onClick={redo} data-testid="redo">redo</button>
+      <button onClick={() => dispatch(undo())} data-testid="undo" >undo</button>
+      <button onClick={() => dispatch(redo())} data-testid="redo">redo</button>
       <input
         type="color"
         data-testid="input"
-        value={current}
-        onChange={({ target }) => record(target.value)}
+        value={state.current}
+        onChange={({ target }) => dispatch(record(target.value))}
       />
       <div
         role="colordiv"
-        style={{ backgroundColor: current, width: '10rem', height: '10rem' }}
+        style={{ backgroundColor: state.current, width: '10rem', height: '10rem' }}
       ></div>
     </>
   );
